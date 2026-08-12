@@ -9,10 +9,14 @@ import (
 	"github.com/wailsapp/wails/v2/pkg/logger"
 	"github.com/wailsapp/wails/v2/pkg/options"
 	"github.com/wailsapp/wails/v2/pkg/options/assetserver"
+	"github.com/wailsapp/wails/v2/pkg/options/linux"
 )
 
 //go:embed all:frontend/dist
 var assets embed.FS
+
+//go:embed build/appicon.png
+var appIcon []byte
 
 // appLogger logs to ~/.config/fsgui/fsgui.log; falls back to stdout-only
 // if the file cannot be created.
@@ -46,6 +50,9 @@ func main() {
 		LogLevelProduction: logger.INFO,
 		OnStartup:          app.startup,
 		OnShutdown:         app.shutdown,
+		Linux: &linux.Options{
+			Icon: appIcon,
+		},
 		Bind: []interface{}{
 			app,
 		},
